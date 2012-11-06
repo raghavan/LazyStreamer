@@ -21,6 +21,7 @@ class Primes(Stream):
     def __init__(self):
         super(Primes, self).__init__()
         self.last_send_prime = 1
+        self.n_poped_list = ()
 
     def popNext(self):
         a = self.last_send_prime + 1;
@@ -39,11 +40,11 @@ class Primes(Stream):
         return True
 
     def popN(self,num_N):
-        n_poped_list = ()
+        self.n_poped_list = ()
         while(num_N):
-            n_poped_list.add(self.popNext())
+            self.n_poped_list.add(self.popNext())
             num_N -= 1
-        return n_poped_list
+        return self.n_poped_list
 
 
 
@@ -51,6 +52,7 @@ class Randoms(Stream):
     def __init__(self):
         super(Randoms, self).__init__()
         self.randoms = set()
+        self.n_poped_set = set()
 
     def popNext(self):
         rand_val = 0
@@ -62,11 +64,11 @@ class Randoms(Stream):
         return rand_val
 
     def popN(self,num_N):
-        n_poped_set = set()
+        self.n_poped_set = set()
         while num_N:
-            n_poped_set.add(self.popNext())
+            self.n_poped_set.add(self.popN())
             num_N -= 1
-        return n_poped_set
+        return self.n_poped_set
 
 class PrimeFactors(Stream):
     def __init__(self, val):
@@ -74,6 +76,7 @@ class PrimeFactors(Stream):
         self.val = val
         self.factors = []
         self.stream_send_factors = []
+        self.n_poped_list = ()
 
     def popNext(self):
         if not self.factors:
@@ -85,11 +88,11 @@ class PrimeFactors(Stream):
                 return factor
 
     def popN(self,num_N):
-        n_poped_list = ()
+        self.n_poped_list = ()
         while num_N:
-            n_poped_list.add(self.popNext())
+            self.n_poped_list.add(self.popNext())
             num_N -= 1
-        return n_poped_list
+        return self.n_poped_list
 
     def prime_factorize(self, n):
         number = math.fabs(n)

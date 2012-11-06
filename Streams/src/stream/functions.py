@@ -12,13 +12,11 @@ class MapStream(Stream):
         return self.fn(val)
 
     def popN(self,num_N):
-        n_popped_list = ()
-        counter = 1
-        while(num_N <= counter):
-            val = self.stream.popNext()
-            n_popped_list.add(self.fn(val))
-            counter+=1
-        return n_popped_list
+        n_poped_list = []
+        while num_N:
+            n_poped_list.append(self.popNext())
+            num_N -= 1
+        return n_poped_list
 
 class FilterStream(Stream):
     def __init__(self, pred, stream):
@@ -35,14 +33,11 @@ class FilterStream(Stream):
         return val
 
     def popN(self,num_N):
-        n_popped_list = ()
-        counter = 1
-        while(num_N <= counter):
-            val = self.stream.popNext()
-            if self.pred(val):
-              n_popped_list.add(self.fn(val))
-              counter+=1
-        return n_popped_list
+        n_poped_list = []
+        while num_N:
+            n_poped_list.add(self.popNext())
+            num_N -= 1
+        return n_poped_list
 
 class ZipWithStream(Stream):
     def __init__(self, fn, streamA, streamB):
@@ -60,17 +55,11 @@ class ZipWithStream(Stream):
         return self.fn(valA, valB)
 
     def popN(self,num_N):
-        n_popped_list = ()
-        counter = 1
-        while(num_N <= counter):
-            valA = self.streamA.popNext()
-            valB = self.streamB.popNext()
-            if valA is not None and valB is not None:
-                n_popped_list.add(self.fn(valA, valB))
-                self.streamA = valA
-                self.streamB = valB
-                counter+=1
-        return n_popped_list
+        n_poped_list = []
+        while num_N:
+            n_poped_list.append(self.popNext())
+            num_N -= 1
+        return n_poped_list
 
 class PrefixReduceStream(Stream):
     def __init__(self, fn, stream, init):
@@ -86,13 +75,11 @@ class PrefixReduceStream(Stream):
 
 
     def popN(self,num_N):
-        n_popped_list = ()
-        counter = 1
-        while(num_N <= counter):
-            self.currentval = self.fn(self.currentval, self.stream.popNext())
-            n_popped_list.add(self.currentval)
-            counter+=1
-        return n_popped_list
+        n_poped_list = []
+        while num_N:
+            n_poped_list.append(self.popNext())
+            num_N -= 1
+        return n_poped_list
 
 def map(fn, stream):
     if stream is null_stream: return null_stream

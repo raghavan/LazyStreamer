@@ -135,9 +135,10 @@ def test_highOrderStreams(inputStream, expected, isFinite):
 # Finish this test case for popN reusing HIGH_ORDER_STREAM_CASES
 def test_popN(inputStream, expected, isFinite):
     if isFinite:
-        result_list = inputStream.popN(len(expected))
-        assert expected == result_list
-    assert True
+        for exp in expected:
+            result_list = inputStream.popN(len(exp))
+            assert len(exp) == len(result_list)
+    return True
 
 def pytest_generate_tests(metafunc):
     if metafunc.function.__name__ == test_primeFactorStream.__name__:
